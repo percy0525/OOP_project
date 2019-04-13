@@ -2,7 +2,9 @@ package shape;
 import java.awt.*;
 
 public class Shape {
-    protected Dimension widthHeight;
-    protected String name;
-    protected Point xy;
+    public Dimension widthHeight;
+    public String name;
+    public Point xy;
+
+    public void paint(Graphics g, Point xy, Dimension widthHeight, String name){}
 }

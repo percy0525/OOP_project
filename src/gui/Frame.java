@@ -19,7 +19,7 @@ public class Frame extends JFrame{
 
         JMenuBar menuBar = new JMenuBar();
         JPanel action_panel = new JPanel();
-        Canvas canvas_panel = new Canvas();
+        UMLCanvas canvas_panel = new UMLCanvas();
 
         canvas_panel.setBackground(Color.WHITE);
 

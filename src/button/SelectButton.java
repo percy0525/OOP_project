@@ -1,5 +1,7 @@
 package button;
 
+import gui.UMLCanvas;
+
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
@@ -14,5 +16,6 @@ public class SelectButton extends Button {
     }
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
+        UMLCanvas.mode = "select";
     }
 }
