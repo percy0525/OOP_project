@@ -1,7 +1,9 @@
 package gui;
 
 import shape.ClassObject;
+import shape.Port;
 import shape.Shape;
+import shape.UseCaseObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,44 +18,59 @@ public class UMLCanvas extends JPanel implements MouseListener {
     private final int W = 100;
     private final int H = 200;
     private ArrayList<Shape> objContainer = new ArrayList<Shape>();
+    private ArrayList<Port> portContainer = new ArrayList<Port>();
     public UMLCanvas(){
         super();
         this.addMouseListener(this);
     }
 
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (mode == "class"){
-            Graphics g = this.getGraphics();
-            ClassObject class_object = new ClassObject(e.getPoint(), new Dimension(W,H), "new class");
-            System.out.println("click");
-            objContainer.add(class_object);
-            for (Shape object : objContainer){
-                object.paint(g, e.getPoint(), new Dimension(W,H), "new class");
-                System.out.println("print obj");
-            }
-        }
-        else if (mode == "select"){
-
-        }
+//
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (mode == "class"){
             Graphics g = this.getGraphics();
-            ClassObject class_object = new ClassObject(e.getPoint(), new Dimension(100,200), "new class");
-            System.out.println("click");
+            ClassObject class_object = new ClassObject(e.getPoint(), new Dimension(W,H), "new class", false);
             objContainer.add(class_object);
             for (Shape object : objContainer){
-                object.paint(g, e.getPoint(), new Dimension(100,200), "new class");
-                System.out.println("print obj");
+                object.paint(g);
+                //System.out.println("obj location:" + object.xy);
             }
         }
         else if (mode == "select"){
 
+            /* TODO replace dimension */
+            checkObject(objContainer, e.getPoint(), new Dimension(W,H));
+            for (Shape object : objContainer){
+                //System.out.println(object.isSelected);
+                if(object.isSelected){
+                    Graphics g = this.getGraphics();
+                    Port portObj = new Port(e.getPoint());
+//                    portContainer.add(portObj);
+                    portObj.paint(object, g);
+                }
+                else{
+                    Graphics g = this.getGraphics();
+                    Port portObj = new Port(e.getPoint());
+                    portObj.clear(object, g);
+                }
+                Graphics g = this.getGraphics();
+                object.paint(g);
+            }
         }
-
+        else if(mode == "use_case"){
+            Graphics g = this.getGraphics();
+            UseCaseObject use_case_object = new UseCaseObject("use_case", e.getPoint(), new Dimension(H,W), false);
+            objContainer.add(use_case_object);
+            for (Shape object : objContainer){
+                object.paint(g);
+                //System.out.println("obj location:" + object.xy);
+            }
+        }
     }
 
     @Override
@@ -65,13 +82,15 @@ public class UMLCanvas extends JPanel implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {    }
 
-//    public boolean checkObject(ArrayList<Shape> objContainer, Point now, Dimension wh){
-//        boolean hasObject = false;
-//        for (Shape object : objContainer){
-//            if((now.getX() + wh.getWidth() < object.xy.getX()) && (now.getY() + wh.getWidth() < object.xy.getX())){
-//
-//            }
-//        }
-//        return hasObject;
-//    }
+    private void checkObject(ArrayList<Shape> objContainer, Point now, Dimension wh){
+        //boolean hasObject = false;
+        for (Shape object : objContainer){
+            if((now.getY() > object.xy.getY()) && (now.getY() < object.xy.getY() + wh.getHeight()) && (now.getX() > object.xy.getX()) && (now.getX() < object.xy.getX() + wh.getWidth())){
+                object.isSelected = true;
+            }
+            else{
+                object.isSelected = false;
+            }
+        }
+    }
 }

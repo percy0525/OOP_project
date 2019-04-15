@@ -13,6 +13,6 @@ public class ClassButton extends Button{
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         UMLCanvas.mode = "class";
-        System.out.println(UMLCanvas.mode);
+        //System.out.println(UMLCanvas.mode);
     }
 }

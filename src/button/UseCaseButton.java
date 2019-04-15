@@ -1,5 +1,7 @@
 package button;
 
+import gui.UMLCanvas;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
@@ -10,5 +12,6 @@ public class UseCaseButton extends Button{
     }
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
+        UMLCanvas.mode = "use_case";
     }
 }
