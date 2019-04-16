@@ -1,7 +1,9 @@
 package button;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import gui.UMLCanvas;
 
 public class CompositionButton extends Button{
     public CompositionButton(String button_name, JPanel button_panel){
@@ -10,5 +12,6 @@ public class CompositionButton extends Button{
     }
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
+        UMLCanvas.mode = "composition_line";
     }
 }

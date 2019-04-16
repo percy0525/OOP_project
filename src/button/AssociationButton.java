@@ -2,6 +2,7 @@ package button;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import gui.UMLCanvas;
 
 public class AssociationButton extends Button{
     public AssociationButton(String button_name, JPanel button_panel){
@@ -10,5 +11,6 @@ public class AssociationButton extends Button{
     }
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
+        UMLCanvas.mode = "association_line";
     }
 }

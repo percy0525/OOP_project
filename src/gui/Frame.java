@@ -4,6 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import button.*;
+import menu.GroupMenu;
+import menu.RenameMenu;
+import menu.UngroupMenu;
 
 import static java.awt.BorderLayout.*;
 
@@ -23,11 +26,6 @@ public class Frame extends JFrame{
 
         canvas_panel.setBackground(Color.WHITE);
 
-        //action_panel.setBounds(0, 0, 300, 600);
-
-        //this.add(action_panel, WEST);
-        //this.add(canvas_panel, BorderLayout.CENTER);
-
         SelectButton select_button = new SelectButton("select", action_panel);
         AssociationButton association_line_button = new AssociationButton("association_line", action_panel);
         GeneralizationButton generalization_line_button = new GeneralizationButton("generalization_line", action_panel);
@@ -46,6 +44,14 @@ public class Frame extends JFrame{
         JMenu edit_menu = new JMenu("Edit");
         menuBar.add(file_menu);
         menuBar.add(edit_menu);
+
+        GroupMenu groupMenuItem = new GroupMenu(canvas_panel, "Group");
+        UngroupMenu ungroupMenuItem = new UngroupMenu(canvas_panel, "Ungroup");
+        RenameMenu renameMenuItem = new RenameMenu(canvas_panel, "Rename");
+
+        edit_menu.add(groupMenuItem);
+        edit_menu.add(ungroupMenuItem);
+        edit_menu.add(renameMenuItem);
 
         action_panel.setLayout(new GridLayout(6, 1));
 
