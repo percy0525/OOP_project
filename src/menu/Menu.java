@@ -15,7 +15,5 @@ public abstract class Menu extends JMenuItem implements ActionListener {
         this.addActionListener(this);
     }
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
+    public void actionPerformed(ActionEvent e) {    }
 }

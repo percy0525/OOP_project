@@ -1,9 +1,7 @@
 package gui;
 
-import shape.ClassObject;
-import shape.Port;
+import shape.*;
 import shape.Shape;
-import shape.UseCaseObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +21,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     private Point mousePress;
     private Point mouseMove;
     private Point mouseRelease;
+    int depth = 99;
+
     public UMLCanvas(){
         super();
         this.addMouseListener(this);
@@ -38,8 +38,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void mousePressed(MouseEvent e) {
         if (mode == "class"){
-            Graphics g = this.getGraphics();
-            ClassObject class_object = new ClassObject(e.getPoint(), new Dimension(W,H), "new class", false);
+            depth = 99 - objContainer.size();
+            ClassObject class_object = new ClassObject(e.getPoint(), new Dimension(W,H), "new class", false, depth);
             objContainer.add(class_object);
             this.repaint();
         }
@@ -48,14 +48,16 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             this.mouseMove.setLocation(e.getPoint());
             /* TODO replace dimension */
             checkObject(objContainer, e.getPoint(), new Dimension(W,H));
+
             this.repaint();
         }
         else if(mode == "use_case"){
-            //Graphics g = this.getGraphics();
-            UseCaseObject use_case_object = new UseCaseObject("use_case", e.getPoint(), new Dimension(H,W), false);
+            depth = 99 - objContainer.size();
+            UseCaseObject use_case_object = new UseCaseObject("use_case", e.getPoint(), new Dimension(H,W), false, depth);
             objContainer.add(use_case_object);
             this.repaint();
         }
+        //System.out.println(depth);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             int offsetX = e.getX() - (int) this.mouseMove.getX();
             int offsetY = e.getY() - (int) this.mouseMove.getY();
             this.mouseMove.setLocation(e.getPoint());
-            checkObject(objContainer, e.getPoint(), new Dimension(W, H));
+            //checkObject(objContainer, e.getPoint(), new Dimension(W, H));
 
             for (Shape object : this.objContainer) {
                 if (object.isSelected) {
@@ -92,6 +94,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 }
             }
             this.repaint();
+        }
+        else if (mode == "association_line"){
         }
     }
     @Override
@@ -103,7 +107,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
         super.paintComponent(g);
         for(Shape shape : objContainer) {
             shape.paint(g);
-            if (shape.isSelected){
+            if (shape.isSelected && mode == "select"){
                 shape.paintPort(g);
             }
         }
