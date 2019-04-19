@@ -18,7 +18,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     private final int W = 100;
     private final int H = 200;
     private ArrayList<Shape> objContainer = new ArrayList<Shape>();
-    private ArrayList<Integer> selectedObjContainer = new ArrayList<Integer>();
+    private ArrayList<Shape> selectedObjContainer = new ArrayList<Shape>();
+    private ArrayList<Integer> selectedDepthContainer = new ArrayList<Integer>();
     private Point mousePress;
     private Point mouseMove;
     private Point mouseRelease;
@@ -39,7 +40,11 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {
+        selectObject(objContainer, e.getPoint());
+
+        this.repaint();
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -50,11 +55,23 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             this.repaint();
         }
         else if (mode == "select"){
+            int selected_cnt = 0;
+            boolean atNoObject = true;
             this.mousePress.setLocation(e.getPoint());
             this.mouseMove.setLocation(e.getPoint());
-            /* TODO replace dimension */
-            selectObject(objContainer, e.getPoint());
-
+            for (Shape object : objContainer){
+                if(object.isSelected){
+                    selected_cnt++;
+                }
+            }
+            for (Shape object : objContainer){
+                if(isInObject(object, this.mousePress)){
+                    atNoObject = false;
+                }
+            }
+            if(selected_cnt <= 1 || atNoObject){
+                selectObject(objContainer, e.getPoint());
+            }
             this.repaint();
         }
         else if(mode == "use_case"){
@@ -153,6 +170,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             this.repaint();
         }
         else if (mode == "select"){
+
             for (Shape object : objContainer){
                 if(selectArea != null){
                     if(selectArea.containObject(object)){
@@ -208,23 +226,23 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             selectArea.paint(g);
         }
     }
-    private void selectObject(ArrayList<Shape> objContainer, Point now){
-        selectedObjContainer.clear();
+    private void selectObject(ArrayList<Shape> objContainer, Point press){
+        selectedDepthContainer.clear();
         //boolean hasObject = false;
         for (Shape object : objContainer){
-            if((now.getY() > object.xy.getY()) && (now.getY() < object.xy.getY() + object.widthHeight.getHeight())
-                    && (now.getX() > object.xy.getX()) && (now.getX() < object.xy.getX() + object.widthHeight.getWidth())){
+            if(isInObject(object, press)){
                 object.isSelected = true;
-                selectedObjContainer.add(object.depth);
+                //selectedObjContainer.add(object);
+                selectedDepthContainer.add(object.depth);
             }
             else{
                 object.isSelected = false;
             }
         }
         try {
-            Collections.sort(selectedObjContainer);
+            Collections.sort(selectedDepthContainer);
             for (Shape object : objContainer){
-                if(object.depth == selectedObjContainer.get(0)){
+                if(object.depth == selectedDepthContainer.get(0)){
                     object.isSelected = true;
                 }
                 else{
