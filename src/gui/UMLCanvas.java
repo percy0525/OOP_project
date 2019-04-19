@@ -26,6 +26,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     private Shape end_obj;
     private Point start_point;
     private Point end_point;
+    private SelectArea selectArea = null;
     int MAX_DEPTH = 99;
 
     public UMLCanvas(){
@@ -152,7 +153,14 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             this.repaint();
         }
         else if (mode == "select"){
-            //selectObject(objContainer, this.mouseRelease);
+            for (Shape object : objContainer){
+                if(selectArea != null){
+                    if(selectArea.containObject(object)){
+                        object.isSelected = true;
+                    }
+                }
+            }
+            selectArea = null;
             this.repaint();
         }
     }
@@ -165,6 +173,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void mouseDragged(MouseEvent e) {
         if (mode == "select") {
+            boolean mouseInObject = true;
             int offsetX = e.getX() - (int) this.mouseMove.getX();
             int offsetY = e.getY() - (int) this.mouseMove.getY();
             this.mouseMove.setLocation(e.getPoint());
@@ -173,6 +182,13 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 if (object.isSelected) {
                     object.translate(offsetX, offsetY);
                 }
+                if (isInObject(object, mouseMove)){
+                    mouseInObject = false;
+                }
+            }
+            if(mouseInObject){
+                Graphics g = this.getGraphics();
+                selectArea = new SelectArea(mousePress, mouseMove);
             }
             this.repaint();
         }
@@ -186,6 +202,10 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             if (shape.isSelected ){
                 shape.paintPort(g);
             }
+        }
+        if (selectArea != null){
+            selectArea.updatePolygon();
+            selectArea.paint(g);
         }
     }
     private void selectObject(ArrayList<Shape> objContainer, Point now){
@@ -253,5 +273,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
         double slope = (object.xy.getY() + object.widthHeight.getHeight() - center.getY()) / (object.xy.getX() + object.widthHeight.getWidth() - center.getX());
 //        System.out.println(center);
         return slope;
+    }
+    public ArrayList<Shape> getObjContainer(){
+        return this.objContainer;
     }
 }
