@@ -62,7 +62,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             objContainer.add(use_case_object);
             this.repaint();
         }
-        else if(mode == "association_line"){
+
+        else if((mode == "generalization_line") || (mode == "composition_line") || (mode == "association_line")){
             this.mousePress.setLocation(e.getPoint());
             start_point = null;
             start_obj = null;
@@ -76,21 +77,9 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             }
             this.repaint();
         }
-        else if(mode == "generalization_line"){
-            this.mousePress.setLocation(e.getPoint());
-            start_point = null;
-            start_obj = null;
-
-            for(Shape object : objContainer) {
-                if(isInObject(object, this.mousePress)){
-                    start_obj = object;
-                    //object.isSelected = true;
-                    start_point = new Point(mousePress);
-                }
-            }
-            this.repaint();
+        else{
+            System.out.println("no selected mode");
         }
-        //System.out.println(depth);
     }
 
     @Override
@@ -118,7 +107,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             }
             this.repaint();
         }
-        if(mode =="generalization_line"){
+        else if(mode =="generalization_line"){
             end_point = null;
             end_obj = null;
             for(Shape object : objContainer) {
@@ -134,6 +123,28 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 GeneralizationLine generalization_line = new GeneralizationLine(start_obj, end_obj, port1, port2);
                 //l.updatePort();
                 objContainer.add(generalization_line);
+            }
+            else{
+                System.out.println("null pointer");
+            }
+            this.repaint();
+        }
+        else if(mode =="composition_line"){
+            end_point = null;
+            end_obj = null;
+            for(Shape object : objContainer) {
+                if(isInObject(object, this.mouseRelease)){
+                    end_point = new Point(mouseRelease);
+                    end_obj = object;
+                    //object.isSelected = true;
+                }
+            }
+            if (start_obj != null && end_obj != null && start_point != null && end_point != null && start_obj != end_obj){
+                int port1 = getPortLocation(start_point, start_obj);
+                int port2 = getPortLocation(end_point, end_obj);
+                CompositionLine composition_line = new CompositionLine(start_obj, end_obj, port1, port2);
+                //l.updatePort();
+                objContainer.add(composition_line);
             }
             else{
                 System.out.println("null pointer");

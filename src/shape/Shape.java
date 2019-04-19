@@ -31,5 +31,8 @@ public class Shape {
         portArray[3] = new Point((int)this.xy.getX(), (int)(this.xy.getY() + this.widthHeight.getHeight()/2));
         return this.portArray;
     }
+    public void setName(String name){
+        this.name = name;
+    }
 }
 
