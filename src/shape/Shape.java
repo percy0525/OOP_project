@@ -1,7 +1,9 @@
 package shape;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Shape {
+    public ArrayList<Shape> compositeContainer = new ArrayList<Shape>();
     public Dimension widthHeight;
     public String name;
     public Point xy;
@@ -11,6 +13,8 @@ public class Shape {
     public boolean isSelected;
     private final int PORT_WIDTH = 10;
     private final int PORT_HEIGHT = 10;
+    public Shape object1;
+    public Shape object2;
 
 
     public void paint(Graphics g){}
@@ -33,6 +37,23 @@ public class Shape {
     }
     public void setName(String name){
         this.name = name;
+    }
+    public void setDepth(int d){
+        this.depth = d;
+    }
+    public boolean isInComposite(Composite c){
+        return false;
+    }
+//    public ArrayList<Shape> getCompositeContainer(){
+//        return this.compositeContainer;
+//    }
+    public void updateDepth(){
+        for (Shape object : compositeContainer){
+            object.setDepth(this.depth);
+        }
+    }
+    public ArrayList<Line> getConnectedLine(){
+        return null;
     }
 }
 

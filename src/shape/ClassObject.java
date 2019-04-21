@@ -25,5 +25,15 @@ public class ClassObject extends Shape {
         g.drawString(name, (int)xy.getX() + (int)widthHeight.getWidth() / 3, (int)xy.getY() + 10);
     }
     //public ArrayList<Point> getPortPoint()
-
+    public boolean isInComposite(Composite c){
+        Point c_right_bottom = new Point((int)c.xy.getX() + (int)c.widthHeight.getWidth(), (int)c.xy.getY() + (int)c.widthHeight.getHeight());
+        Point this_right_bottom = new Point((int)this.xy.getX() + (int)this.widthHeight.getWidth(), (int)this.xy.getY() + (int)this.widthHeight.getHeight());
+        if(c.xy.getX() <= this.xy.getX() && c.xy.getY() <= this.xy.getY()
+                && c_right_bottom.getX() >= this_right_bottom.getX() && c_right_bottom.getY() >= this_right_bottom.getY()){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

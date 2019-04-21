@@ -20,6 +20,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     private ArrayList<Shape> objContainer = new ArrayList<Shape>();
     private ArrayList<Shape> selectedObjContainer = new ArrayList<Shape>();
     private ArrayList<Integer> selectedDepthContainer = new ArrayList<Integer>();
+    private ArrayList<Shape> groupContainer = new ArrayList<Shape>();
+    private ArrayList<Line> lineContainer = new ArrayList<Line>();
     private Point mousePress;
     private Point mouseMove;
     private Point mouseRelease;
@@ -28,7 +30,8 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     private Point start_point;
     private Point end_point;
     private SelectArea selectArea = null;
-    int MAX_DEPTH = 99;
+    public static final int MAX_DEPTH = 99;
+    public int composite_cnt = 0;
 
     public UMLCanvas(){
         super();
@@ -41,7 +44,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        selectObject(objContainer, e.getPoint());
+        //selectObject(objContainer, e.getPoint());
 
         this.repaint();
     }
@@ -63,8 +66,10 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 if(object.isSelected){
                     selected_cnt++;
                 }
-            }
-            for (Shape object : objContainer){
+                if(isInObject(object, this.mousePress) && !object.isSelected){
+                    //atNoObject = false;
+                    selectObject(objContainer, e.getPoint());
+                }
                 if(isInObject(object, this.mousePress)){
                     atNoObject = false;
                 }
@@ -75,7 +80,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
             this.repaint();
         }
         else if(mode == "use_case"){
-            int depth = 99 - objContainer.size();
+            int depth = MAX_DEPTH - objContainer.size();
             UseCaseObject use_case_object = new UseCaseObject("use_case", e.getPoint(), new Dimension(H,W), false, depth);
             objContainer.add(use_case_object);
             this.repaint();
@@ -118,6 +123,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 int port2 = getPortLocation(end_point, end_obj);
                 AssociationLine association_line = new AssociationLine(start_obj, end_obj, port1, port2);
                 //l.updatePort();
+                lineContainer.add(association_line);
                 objContainer.add(association_line);
             }
             else{
@@ -141,6 +147,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 GeneralizationLine generalization_line = new GeneralizationLine(start_obj, end_obj, port1, port2);
                 //l.updatePort();
                 objContainer.add(generalization_line);
+                lineContainer.add(generalization_line);
             }
             else{
                 System.out.println("null pointer");
@@ -163,6 +170,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 CompositionLine composition_line = new CompositionLine(start_obj, end_obj, port1, port2);
                 //l.updatePort();
                 objContainer.add(composition_line);
+                lineContainer.add(composition_line);
             }
             else{
                 System.out.println("null pointer");
@@ -250,7 +258,7 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
                 }
             }
         } catch (Exception e) {
-            System.out.println("no selected object");
+            //System.out.println("no selected object");
         }
     }
     private boolean isInObject(Shape object, Point now){
@@ -294,5 +302,16 @@ public class UMLCanvas extends JPanel implements MouseListener, MouseMotionListe
     }
     public ArrayList<Shape> getObjContainer(){
         return this.objContainer;
+    }
+    public ArrayList<Shape> getGroupContainer(){
+        return this.groupContainer;
+    }
+    public ArrayList<Line> getLineContainer(){
+        return this.lineContainer;
+    }
+    public void clearSelect(){
+        for (Shape object : objContainer){
+            object.isSelected = false;
+        }
     }
 }

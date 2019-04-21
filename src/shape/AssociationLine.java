@@ -14,10 +14,12 @@ public class AssociationLine extends Line{
     }
 
     public void paint(Graphics g){
+        super.paint(g);
         Point[] portArray1 = object1.getPortArray();
         Point[] portArray2 = object2.getPortArray();
         start_point = portArray1[port1-1];
         end_point = portArray2[port2-1];
+
         g.drawLine((int)start_point.getX(), (int)start_point.getY(), (int)end_point.getX(), (int)end_point.getY());
     }
 }

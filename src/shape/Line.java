@@ -3,10 +3,6 @@ package shape;
 import java.awt.*;
 
 public class Line extends Shape{
-    protected Shape object1;
-    protected Shape object2;
-    protected Point selectedPort1;
-    protected Point selectedPort2;
 
     public Line(Shape object1, Shape object2){
         this.object1 = object1;
@@ -16,6 +12,8 @@ public class Line extends Shape{
         super.depth = -1;
     }
     public void paint(Graphics g){
-        super.paint(g);
+        if(object1 != null && object2 != null){
+            super.paint(g);
+        }
     }
 }
