@@ -17,6 +17,7 @@ public class UseCaseObject extends Shape{
         g.fillOval((int)this.xy.getX(), (int)this.xy.getY(), (int)this.widthHeight.getWidth(), (int)this.widthHeight.getHeight());
         g.setColor(Color.BLACK);
         g.drawOval((int)this.xy.getX(), (int)this.xy.getY(), (int)this.widthHeight.getWidth(), (int)this.widthHeight.getHeight());
+        //g.setFont(new Font("TimesRoman", Font.PLAIN, 16));
         g.drawString(this.name, (int)this.xy.getX() + (int)this.widthHeight.getWidth() / 4, (int)this.xy.getY() + (int)this.widthHeight.getHeight() / 2);
     }
     public boolean isInComposite(Composite c){

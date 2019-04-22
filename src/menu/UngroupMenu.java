@@ -60,6 +60,7 @@ public class UngroupMenu extends Menu{
                 }
                 else{
                     object.setDepth(UMLCanvas.MAX_DEPTH - canvas.getObjContainer().indexOf(object));
+                    //object.isSelected = false;
                 }
             }
 

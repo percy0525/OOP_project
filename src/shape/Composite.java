@@ -19,7 +19,7 @@ public class Composite extends Shape {
         int x_points[] = {(int)this.xy.getX(), (int)this.xy.getX(), (int)this.xy.getX() + (int)this.widthHeight.getWidth(), (int)this.xy.getX() + (int)this.widthHeight.getWidth()};
         int y_points[] = {(int)this.xy.getY(), (int)this.xy.getY() + (int)this.widthHeight.getHeight(), (int)this.xy.getY() + (int)this.widthHeight.getHeight(), (int)this.xy.getY()};
         //g.drawRect((int)this.xy.getX(), (int)this.xy.getY(), (int)this.widthHeight.getWidth(), (int)this.widthHeight.getHeight());
-        //g.drawString(this.name, (int)this.xy.getX() + (int)this.widthHeight.getWidth() / 3, (int)this.xy.getY() + 10);
+        //g.drawString(this.name, (int)this.xy.getX() + (int)this.widthHeight.getWidth() / 3, (int)this.xy.getY() + 20);
         g.drawPolygon(x_points, y_points, 4);
     }
 //    public ArrayList<Shape> getCompositeContainer(){
